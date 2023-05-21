@@ -86,6 +86,7 @@ class UserInfoController extends Controller
                 'is_man' => $request->questionnaire_is_man
             ]);
 
-        $this->show_edit();
+
+        return back();
     }
 }
