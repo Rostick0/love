@@ -16,16 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::get('/chat');
+// Route::get('/chat');
 
-Route::get('/chat/{id}/message', [MessageController::class, 'getMessagesByUser']);
+// Route::get('/chat/{id}/message', [MessageController::class, 'getMessagesByUser']);
 
-Route::post('/message', [MessageController::class, 'createMessage']);
+// Route::post('/message', [MessageController::class, 'createMessage']);
 
-// Route::get('/message', [MessageController::class, 'createMessage']);
+// // Route::get('/message', [MessageController::class, 'createMessage']);
 
-Route::post('/guest/{user_id}', [GuestController::class, 'create']);
+// Route::post('/guest/{user_id}', [GuestController::class, 'create']);

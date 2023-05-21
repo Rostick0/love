@@ -18,13 +18,4 @@ class ChatController extends Controller
             'chats' => $chats
         ]);
     }
-
-    public function get()
-    {
-        return DB::table('chats')
-            ->where([
-                ''
-            ])
-            ->paginate(15);
-    }
 }

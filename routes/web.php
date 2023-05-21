@@ -50,3 +50,5 @@ Route::get('/chat', [ChatController::class, 'show'])->name('chat')->middleware('
 Route::get('/chat/{id}', [MessageController::class, 'show'])->name('messages')->middleware('auth');
 
 Route::get('/alert', [AlertsController::class, 'show'])->name('alert')->middleware('auth');
+
+Route::post('/message/{id}', [MessageController::class, 'create'])->name('message')->middleware('auth');

@@ -23,8 +23,9 @@
                         </li>
                     @endforeach
                 </ul>
-                <form action="" class="messages__form">
-                    <input type="text" class="messages__input input">
+                <form action="{{route('message', $user->users_id)}}" class="messages__form" method="post">
+                    @csrf
+                    <input type="text" class="messages__input input" name="text">
                     <button class="messages__button button">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -42,9 +43,5 @@
             const messageList = document.querySelector(".messages__list");
             messageList.scrollTop = messageList.scrollHeight;
         })();
-
-        fetch('/api/chat/2/message/?page=1&token=20c9c0816d0126b7ecffa1d290942455')
-            .then(res => res.json())
-            .then(res => console.log(res))
     </script>
 @endsection

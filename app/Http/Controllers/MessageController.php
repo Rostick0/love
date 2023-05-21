@@ -25,30 +25,21 @@ class MessageController extends Controller
         ]);
     }
 
-    public function createMessage(Request $request, int $id)
+    public function create(Request $request, int $id)
     {
         $token = $request->token;
 
-        $user = User::where('token', $token)->get();
-
         $valid = $request->validate([
-            $id => 'required',
             'text' => 'required'
         ]);
-
-
-
-        // $chat = Chat::firstOrCreate([
-        //     ''
-        // ]);
 
         $query = Message::create([
             'text' => $request->text,
             'to_user' =>  $id,
-            'from_user' => $user->id,
+            'from_user' => Auth::id(),
         ]);
 
-        return $query;
+        return back();
     }
 
     public function getMessagesByUser(Request $request, int $id)

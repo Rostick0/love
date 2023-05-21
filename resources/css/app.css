@@ -592,7 +592,7 @@ body {
 .messages__list {
     padding: 15px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     row-gap: 12px;
     flex-grow: 1;
     overflow: auto;
