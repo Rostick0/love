@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlertsController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\LoginController;
@@ -47,3 +48,5 @@ Route::get('/search', [SearchController::class, 'show'])->name('search');
 Route::get('/chat', [ChatController::class, 'show'])->name('chat')->middleware('auth');
 
 Route::get('/chat/{id}', [MessageController::class, 'show'])->name('messages')->middleware('auth');
+
+Route::get('/alert', [AlertsController::class, 'show'])->name('alert')->middleware('auth');

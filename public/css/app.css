@@ -203,6 +203,24 @@ body {
          column-gap: 15px;
 }
 
+.header__navigation_item {
+    position: relative;
+}
+
+.header__alerts {
+    border-radius: 12px;
+    background-color: red;
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 2px;
+    transform: translate(10px, -10px);
+    text-align: center;
+    min-width: 20px;
+}
+
 .header__navigation_item a {
     color: rgb(0, 130, 180);
 }

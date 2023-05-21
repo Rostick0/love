@@ -17,29 +17,26 @@ class UserInfo extends Model
     {
         $user_questionnaire = DB::table('user_questionnaires')
             ->where('users_id', '=', Auth::id())
-            ->limit(1)
-            ->get()[0] ?? [];
+            ->first();
 
         $where = [];
 
-        if ($user_questionnaire->birth_year_min) $where[] = ['birth_year_min', '>=', $user_questionnaire->birth_year_min];
-        if ($user_questionnaire->birth_year_max) $where[] = ['birth_year_max', '<=', $user_questionnaire->birth_year_max];
-        if ($user_questionnaire->city) $where[] = ['city', '=', $user_questionnaire->city];
-        if ($user_questionnaire->is_man) $where[] = ['is_man', '=', $user_questionnaire->is_man];
+        if ($user_questionnaire->birth_year_min) $where[] = ['user_infos.birth_year_min', '>=', $user_questionnaire->birth_year_min];
+        if ($user_questionnaire->birth_year_max) $where[] = ['user_infos.birth_year_max', '<=', $user_questionnaire->birth_year_max];
+        if ($user_questionnaire->city) $where[] = ['user_infos.city', '=', $user_questionnaire->city];
+        if ($user_questionnaire->is_man) $where[] = ['user_infos.is_man', '=', $user_questionnaire->is_man];
 
-        $where[] = ['users_id', '!=', Auth::id()];
-
-        // dd($where);
-
-        // return DB::table('user_infos')->where($where)->get()[0];
+        $where[] = ['user_infos.users_id', '!=', Auth::id()];
 
         return UserInfo::where($where)
-            // ->join('likes', function (JoinClause $join) {
-            //     $join->on('likes.to_user', '!=', 'user_infos.users_id')
-            //         ->where('likes.from_user', '=', Auth::user()->id);
-            // })
-            ->first();
-            // ->get();
+            ->select('user_infos.*')
+            ->leftJoin('likes', 'likes.to_user', '=', 'user_infos.users_id')
+            ->leftJoin('user_skips', 'likes.to_user', '=', 'user_infos.users_id')
+            ->where('likes.from_user', '!=', Auth::id())
+            ->orWhereNull('likes.from_user')
+            ->where('user_skips.from_user', '!=', Auth::id())
+            ->orWhereNull('user_skips.from_user')
+            ->firstOrFail();
     }
 
     public static function getFullInfo(int $id)

@@ -22,10 +22,19 @@
                         <li class="header__navigation_item">
                             <a href="{{ URL::route('search') }}">Поиск</a>
                         </li>
-                        <li class="header__navigation_item">
-                            <a href="{{ URL::route('chat') }}">Чат</a>
-                        </li>
                         @if (Auth::check())
+                            <li class="header__navigation_item">
+                                <a href="{{ URL::route('alert') }}">Уведомления</a>
+                                @if (
+                                    $alerts =
+                                        DB::table('alerts')->where([['to_user', '=', Auth::id()], ['is_read', '=', 0]])->count() > 0)
+                                    <div class="header__alerts">
+                                        {{ $alerts }}</div>
+                                @endif
+                            </li>
+                            <li class="header__navigation_item">
+                                <a href="{{ URL::route('chat') }}">Чат</a>
+                            </li>
                             <li class="header__navigation_item">
                                 <a href="{{ URL::route('profile', Auth::id()) }}">Профиль</a>
                             </li>

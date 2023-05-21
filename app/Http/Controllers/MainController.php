@@ -12,8 +12,6 @@ class MainController extends Controller
     {
         $user_infos = UserInfo::recommendation();
 
-        // dd($user_infos->name);
-
         return view('main', [
             'user' => $user_infos
         ]);

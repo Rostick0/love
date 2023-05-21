@@ -11,15 +11,24 @@ class Chat extends Model
 {
     use HasFactory;
 
-    // public function getChats()
-    // {
-    //     return DB::table('chat_rooms')
-    //         ->where(
-    //             'users_id',
-    //             '=',
-    //             Auth::user()->id
-    //         )
-    //         ->join('users', 'users.id', '=', 'chats')
-    //         ->paginate(15);
-    // }
+    public static function get()
+    {
+        $union = Message::select('to_user')
+            ->distinct()
+            ->where('from_user', '=', Auth::id());
+
+        $chats = Message::union($union)
+            ->select('from_user')
+            ->distinct()
+            ->where('to_user', '=', Auth::id())
+            ->get();
+
+        $where_sql = [];
+
+        foreach ($chats as $chat) {
+            $where_sql[] = $chat['from_user'];
+        }
+
+        return UserInfo::whereIn('users_id', $where_sql)->get();
+    }
 }
