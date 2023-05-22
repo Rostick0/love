@@ -27,9 +27,7 @@ class UserInfo extends Model
         if ($user_questionnaire->is_man) $where[] = ['user_infos.is_man', '=', $user_questionnaire->is_man];
 
         $where[] = ['user_infos.users_id', '!=', Auth::id()];
-
-        // $skips = DB::table('user_skips')->where('from_user', '=', Auth::id());
-
+        
         return UserInfo::select('user_infos.*')
             ->leftJoin('likes', 'likes.to_user', '=', 'user_infos.users_id')
             ->leftJoin('user_skips', 'likes.to_user', '=', 'user_infos.users_id')
@@ -45,19 +43,7 @@ class UserInfo extends Model
                         )
                         ->where('from_user', '=', Auth::id())
                 );
-                // $query->where(function ($query) {
-                //     $query->where('likes.from_user', '!=', Auth::id())
-                //         ->orWhereNull('likes.from_user');
-                // })
-                //     ->orWhere(function ($query) {
-                //         $query->where('user_skips.from_user', '!=', Auth::id())
-                //             ->orWhereNull('user_skips.from_user');
-                //     });
             })
-            // ->where(function ($query) {
-            //     $query->where('likes.from_user', '!=', Auth::id())
-            //         ->orWhereNull('likes.from_user');
-            // })
             ->firstOrFail();
     }
 
