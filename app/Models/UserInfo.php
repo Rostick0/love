@@ -32,10 +32,14 @@ class UserInfo extends Model
             ->select('user_infos.*')
             ->leftJoin('likes', 'likes.to_user', '=', 'user_infos.users_id')
             ->leftJoin('user_skips', 'likes.to_user', '=', 'user_infos.users_id')
-            ->where('likes.from_user', '!=', Auth::id())
-            ->orWhereNull('likes.from_user')
-            ->where('user_skips.from_user', '!=', Auth::id())
-            ->orWhereNull('user_skips.from_user')
+            ->where(function ($query) {
+                $query->where('likes.from_user', '!=', Auth::id())
+                    ->orWhereNull('likes.from_user');
+            })
+            ->where(function ($query) {
+                $query->where('user_skips.from_user', '!=', Auth::id())
+                    ->orWhereNull('user_skips.from_user');
+            })
             ->firstOrFail();
     }
 
