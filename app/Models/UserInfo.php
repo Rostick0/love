@@ -28,18 +28,36 @@ class UserInfo extends Model
 
         $where[] = ['user_infos.users_id', '!=', Auth::id()];
 
-        return UserInfo::where($where)
-            ->select('user_infos.*')
+        // $skips = DB::table('user_skips')->where('from_user', '=', Auth::id());
+
+        return UserInfo::select('user_infos.*')
             ->leftJoin('likes', 'likes.to_user', '=', 'user_infos.users_id')
             ->leftJoin('user_skips', 'likes.to_user', '=', 'user_infos.users_id')
+            ->where($where)
             ->where(function ($query) {
-                $query->where('likes.from_user', '!=', Auth::id())
-                    ->orWhereNull('likes.from_user');
+                $query->whereNotIn(
+                    'user_infos.users_id',
+                    Like::select('to_user')
+                        ->union(
+                            DB::table('user_skips')
+                                ->select('to_user')
+                                ->where('from_user', '=', Auth::id())
+                        )
+                        ->where('from_user', '=', Auth::id())
+                );
+                // $query->where(function ($query) {
+                //     $query->where('likes.from_user', '!=', Auth::id())
+                //         ->orWhereNull('likes.from_user');
+                // })
+                //     ->orWhere(function ($query) {
+                //         $query->where('user_skips.from_user', '!=', Auth::id())
+                //             ->orWhereNull('user_skips.from_user');
+                //     });
             })
-            ->where(function ($query) {
-                $query->where('user_skips.from_user', '!=', Auth::id())
-                    ->orWhereNull('user_skips.from_user');
-            })
+            // ->where(function ($query) {
+            //     $query->where('likes.from_user', '!=', Auth::id())
+            //         ->orWhereNull('likes.from_user');
+            // })
             ->firstOrFail();
     }
 

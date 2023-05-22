@@ -16,6 +16,8 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
+        if (Auth::check()) return redirect()->intended('/profile/' . Auth::user()->id);
+
         $credentials = $request->validate([
             'email' => 'required',
             'password' => 'required'
@@ -27,7 +29,7 @@ class LoginController extends Controller
             ]);
         }
 
-        if (Auth::check()) return redirect()->intended('/profile/' . Auth::user()->id);
+        if (Auth::check()) return redirect('/profile/' . Auth::user()->id);
 
         return redirect('/login');
     }

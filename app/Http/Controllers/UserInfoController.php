@@ -17,7 +17,7 @@ class UserInfoController extends Controller
     {
         $user = UserInfo::getFullInfo($id);
 
-        if (Auth::id() != $id) {
+        if (Auth::id() && Auth::id() != $id) {
             GuestController::create($id);
         }
 
