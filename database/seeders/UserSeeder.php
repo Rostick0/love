@@ -18,9 +18,9 @@ class UserSeeder extends Seeder
 
     private $users = [
         [
-            'email' =>  'rostik057@gmail.com',
-            'user_password' => 'rostik057@gmail.com',
-            'user_name' => 'Ростислав',
+            'email' =>  'igor@gmail.com',
+            'user_password' => 'igor@gmail.com',
+            'user_name' => 'Игорь',
             'user_year' => 2003,
             'user_city' => 'Москва',
             'user_is_man' => 1,
