@@ -13,7 +13,7 @@
                         @csrf
                         <button class="user__application _like">❤</button>
                     </form>
-                    <form action="{{ route('set_skip', $user->users_id) }}" action="post">
+                    <form action="{{ route('set_skip', $user->users_id) }}" method="post">
                         @csrf
                         <button class="user__application _skip">✖</button>
                     </form>

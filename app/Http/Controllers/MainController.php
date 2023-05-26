@@ -8,12 +8,14 @@ use Illuminate\View\View;
 
 class MainController extends Controller
 {
-    public function show(): View
+    public function show()
     {
         $user_infos = UserInfo::recommendation();
 
+        if ($user_infos->count() < 1) return redirect('/search');
+
         return view('main', [
-            'user' => $user_infos
+            'user' => $user_infos[0]
         ]);
     }
 }

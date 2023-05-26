@@ -27,24 +27,23 @@ class UserInfo extends Model
         if ($user_questionnaire->is_man) $where[] = ['user_infos.is_man', '=', $user_questionnaire->is_man];
 
         $where[] = ['user_infos.users_id', '!=', Auth::id()];
-        
+
         return UserInfo::select('user_infos.*')
             ->leftJoin('likes', 'likes.to_user', '=', 'user_infos.users_id')
             ->leftJoin('user_skips', 'likes.to_user', '=', 'user_infos.users_id')
             ->where($where)
-            ->where(function ($query) {
-                $query->whereNotIn(
-                    'user_infos.users_id',
-                    Like::select('to_user')
-                        ->union(
-                            DB::table('user_skips')
-                                ->select('to_user')
-                                ->where('from_user', '=', Auth::id())
-                        )
-                        ->where('from_user', '=', Auth::id())
-                );
-            })
-            ->firstOrFail();
+            ->whereNotIn(
+                'user_infos.users_id',
+                Like::select('to_user')
+                    ->union(
+                        DB::table('user_skips')
+                            ->select('to_user')
+                            ->where('from_user', '=', Auth::id())
+                    )
+                    ->where('from_user', '=', Auth::id())
+            )
+            ->limit(1)
+            ->get();
     }
 
     public static function getFullInfo(int $id)
