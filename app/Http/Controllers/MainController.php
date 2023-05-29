@@ -12,6 +12,8 @@ class MainController extends Controller
     {
         $user_infos = UserInfo::recommendation();
 
+        // dd($user_infos);
+
         if ($user_infos->count() < 1) return redirect('/search');
 
         return view('main', [

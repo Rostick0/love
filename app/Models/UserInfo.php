@@ -28,21 +28,28 @@ class UserInfo extends Model
 
         $where[] = ['user_infos.users_id', '!=', Auth::id()];
 
+        $user_skips = DB::table('user_skips')
+            ->select('to_user')
+            ->where('from_user', '=', Auth::id());
+
         return UserInfo::select('user_infos.*')
             ->leftJoin('likes', 'likes.to_user', '=', 'user_infos.users_id')
             ->leftJoin('user_skips', 'likes.to_user', '=', 'user_infos.users_id')
             ->where($where)
             ->whereNotIn(
                 'user_infos.users_id',
-                Like::select('to_user')
-                    ->union(
-                        DB::table('user_skips')
-                            ->select('to_user')
-                            ->where('from_user', '=', Auth::id())
-                    )
-                    ->where('from_user', '=', Auth::id())
+                Like::where('from_user', '=', Auth::id())
+                    ->select('to_user')
+                // ->union(
+                //     $user_skips
+                // )
+            )
+            ->whereNotIn(
+                'user_infos.users_id',
+                $user_skips
             )
             ->limit(1)
+            // ->toSql();
             ->get();
     }
 
@@ -73,6 +80,10 @@ class UserInfo extends Model
         $is_man = $request->get('is_man');
 
         $where_query = [];
+
+        // dd($age_min);
+        
+
 
         if ($name) $where_query[] = ['name', 'LIKE', "%$name%"];
         if ($age_min) $where_query[] = ['birth_year', "<=", "$age_min"];

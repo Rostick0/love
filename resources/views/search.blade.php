@@ -25,6 +25,7 @@
                         <span>Город</span>
                         <select class="input" name="city">
                             @foreach (Config::get('constants.cities') as $city)
+                            <option value=""></option>
                                 <option @if ($city == urldecode(Request::get('city'))) selected @endif value="{{ $city }}">
                                     {{ $city }}</option>
                             @endforeach
